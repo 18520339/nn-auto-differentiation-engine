@@ -70,10 +70,10 @@ private:
 
 public:
     vector<TensorPtr> &get_parameters() { return parameters; }
-    const int &get_input_size() const { return input_size; }
-    const int &get_output_size() const { return output_size; }
-    const string &get_name() const { return name; }
-    const string &get_activation() const { return activation; }
+    const int &get_input_size() { return input_size; }
+    const int &get_output_size() { return output_size; }
+    const string &get_name() { return name; }
+    const string &get_activation() { return activation; }
 
     Dense(int _input_size, int _output_size, const string &_activation = "", function<double(int, int)> init_func = nullptr, const string &_name = "Dense")
         : input_size(_input_size), output_size(_output_size), activation(_activation), name(_name) {
