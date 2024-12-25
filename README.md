@@ -1,5 +1,7 @@
 # **C++17** Autograd Neural Network Framework
 
+> Demo: https://youtu.be/tH6AvNnQnLQ
+
 A flexible and extensible framework in pure **C++17** designed to facilitate the construction, training, and evaluation of Neural Networks. Inspired by modern Deep Learning frameworks like [PyTorch](https://pytorch.org) and [TensorFlow](https://www.tensorflow.org), this project provides:
 - A collection of modular components with an **automatic differentiation engine** as essential building blocks for experimenting with custom **model architectures**.
 - A foundational understanding how Neural Network and its **computational graph** can be implemented from scratch, offering insights into the underlying mechanics of **forward** and **backward** propagation, gradient computation using **chain rule**, and its optimization using **Gradient Descent**.
@@ -391,7 +393,7 @@ Learning rate scheduling is an effective technique to improve training convergen
 
 👉 **Constructor**: `LearningRateScheduler`(*double* `initial_lr`, *string* `name`);
 
-👉 **Pure Virtual Method** to compute lr at a given training step: `virtual double operator()(int step) = 0`.
+👉 **Pure Virtual Method** to compute lr at a given training step: *virtual double* **operator**()(*int* `step`) = 0.
 
 ### 6.2. class `WarmUpAndDecayScheduler` [🔝](#core-components)
 
@@ -489,12 +491,12 @@ auto X_test_scaled = scaler.transform(X_test);
 
 ### 8.3. `Tensor` Conversion [🔝](#core-components)
 
-- *vector<**`TensorPtr`**>* **doubles_to_1d_tensors**(*const vector<*double*>&* `data`): Converts a *vector* of *doubles* to a *vector* of **1D** `Tensor` pointers by iterating over the data and creating a **`TensorPtr`** for each value.
+- *vector<**`TensorPtr`**>* **doubles_to_1d_tensors**(*const vector<*double*>&* `data`): Converts a *vector* of *doubles* to a *vector* of **1D** [Tensor](#i-tensorhpp--tensor-class-and-auto-differentiation-engine-) pointers by iterating over the data and creating a **`TensorPtr`** for each value.
 - *vector<**`TensorPtr`**>* **doubles_to_2d_tensors**(*const vector<vector<*double*>>&* `data`): Converts a **2D** *vector* of doubles to a **2D** *vector* of **`TensorPtr`**.
 
 ## Potential Improvements
 
-- [ ] **Extend Tensor Support**: Implement support for multi-dimensional **`Tensor`** (**`Tensor`** with > 1 dimension).
+- [ ] **Extend Tensor Support**: Implement support for multi-dimensional [Tensor](#i-tensorhpp--tensor-class-and-auto-differentiation-engine-) ([Tensor](#i-tensorhpp--tensor-class-and-auto-differentiation-engine-) with > 1 dimension).
 - [ ] **Additional Layers**: Add more types of layers such as convolutional layers and recurrent layers.
 - [ ] **Optimizers**: Implement more sophisticated optimization algorithms like Adam or RMSProp.
 - [ ] **Concurrency**: The code currently runs on a single thread. Multi-threading or GPU acceleration can be explored for more computational efficiency or performance improvements on large datasets.
