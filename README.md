@@ -1,10 +1,12 @@
 # **C++17** Autograd Neural Network Framework
 
+![image](https://github.com/user-attachments/assets/3879a2b3-a978-4b32-b4ac-b3907377d000)
+
 > Demo: https://youtu.be/tH6AvNnQnLQ
 
 A flexible and extensible framework in pure **C++17** designed to facilitate the construction, training, and evaluation of Neural Networks. Inspired by modern Deep Learning frameworks like [PyTorch](https://pytorch.org) and [TensorFlow](https://www.tensorflow.org), this project provides:
 - A collection of modular components with an **automatic differentiation engine** as essential building blocks for experimenting with custom **model architectures**.
-- A foundational understanding how Neural Network and its **computational graph** can be implemented from scratch, offering insights into the underlying mechanics of **forward** and **backward** propagation, gradient computation using **chain rule**, and its optimization using **Gradient Descent**.
+- A foundational understanding of how Neural Network and its **computational graph** can be implemented from scratch, offering insights into the underlying mechanics of **forward** and **backward** propagation, gradient computation using **chain rule**, and its optimization using **Gradient Descent**.
 
 This project serves both educational purposes for those interested in understanding the internals of Neural Networks and practical applications where a lightweight, efficient, and customizable framework is needed.
 
@@ -34,7 +36,7 @@ I have included some example scripts demonstrating how to use the engine. Compil
 </tr>
 <tr>
   <td><a href="./backward_test.cpp">backward_test.cpp</a></td>
-  <td>Demonstrate/verify the correctness of auto-differentiation by calculating the gradients of simple computation graph.</td>
+  <td>Demonstrate/verify the correctness of auto-differentiation by calculating the gradients of a simple computation graph.</td>
   <td>
   
   ```bash
@@ -80,7 +82,7 @@ g++ train_mnist.cpp -o train_mnist
 
 ***[Note]** Before running, ensure that:
 - You have a **C++17** (or higher) compatible compiler.
-- The **Iris** and **MNIST** dataset are available in the specified `data` directory. Here, I just simply use their `.csv` files directly from **Kaggle**.
+- The **Iris** and **MNIST** datasets are available in the specified `data` directory. Here, I just simply use their `.csv` files directly from **Kaggle**.
 
 # Core Components
 
@@ -121,7 +123,7 @@ The engine is organized into several header files (`.hpp`) located in the [n2n_a
 
 ## I. [`tensor.hpp`](./n2n_autograd/tensor.hpp) | Tensor Class and Auto-differentiation Engine [🔝](#core-components)
 
-Contain the **`Tensor`** class, a core data structure of the **autograd** engine, representing a node or scalar value in the computation graph. It supports **automatic differentiation** by recording/maintaining references to its child **tensors** and the operations that produced it. 
+Contain the **`Tensor`** class, a core data structure of the **autograd** engine, representing a node or scalar value in the computation graph. It supports **automatic differentiation** by recording/maintaining references to its child **tensors** and the operations that produced them. 
 
 When operations are performed on **tensors** (e.g., `addition`, `multiplication`), new **tensors** are created, and the graph is dynamically built. During **backpropagation**, the `gradients` with respect to each **`Tensor`** are computed by traversing this graph in **reverse topological order**. 
 
@@ -177,7 +179,7 @@ Weight initialization is critical in Neural Network training. Proper initializat
 - *static double* **he_uniform**(*int* `fan_in`, *int* `fan_out`): Initialize weights using the **He** initialization method, suitable for layers with `relu` activation functions. It calculates the limit using sqrt(6 / `fan_in`).
 - *static double* **glorot_uniform**(*int* `fan_in`, *int* `fan_out`): Initialize weights using the **Glorot (Xavier)** initialization method, suitable for layers with `sigmoid` or `tanh` activation functions. It calculates the limit using sqrt(6 / (`fan_in` + `fan_out`)).
 
-**he_uniform** and **glorot_uniform** are commonly used initialization methods in practice. They generates a random number between [`-limit`; `limit`] with `fan_in` as number of input units and `fan_out` as number of output units.
+**he_uniform** and **glorot_uniform** are commonly used initialization methods in practice. They generate a random number between [`-limit`; `limit`] with `fan_in` as the number of input units and `fan_out` as the number of output units.
 
 ### 2.2. class `Neuron` [🔝](#core-components)
 
@@ -200,7 +202,7 @@ Neuron(int input_size, const string &_activation = "", function<double()> init_f
 - `init_func`: Function to initialize `weights` and `bias`.
 - `_name`: A name for the neuron.
 
-It will creates a `weight` and a `bias` **`Tensor`** for each input, initializing them using the [initializer](#21-class-initializers-). If no [initializer](#21-class-initializers-) is provided, a default uniform **random initializer** between **[-1; 1]** is used. These `weights` and `bias` are stored in the `parameters` *vector*.
+It will create a `weight` and a `bias` **`Tensor`** for each input, initializing them using the [initializer](#21-class-initializers-). If no [initializer](#21-class-initializers-) is provided, a default uniform **random initializer** between **[-1; 1]** is used. These `weights` and `bias` are stored in the `parameters` *vector*.
 
 👉 ***`TensorPtr`*** **forward**(*const vector<**`TensorPtr`**>&* `inputs`):
 
@@ -416,8 +418,8 @@ WarmUpAndDecayScheduler(double initial_lr, int warmup_steps, int decay_steps, do
 👉 *double* **operator**()(*int* `step`): 
 
 Computes the learning rate at a specific step.
-- If the current step is within the warm-up phase, increases the learning rate linearly.
-- After warm-up, decays the learning rate exponentially based on the decay rate and number of decay steps.
+- If the current step is within the warm-up phase, increase the learning rate linearly.
+- After the warm-up, decay the learning rate exponentially based on the decay rate and number of decay steps.
 
 ### 6.3. Usage Example [🔝](#core-components)
 
@@ -431,7 +433,7 @@ delete lr_scheduler;
 
 ### VII. [`preprocess.hpp`](./n2n_autograd/preprocess.hpp) | Data Preprocessing Utilities [🔝](#core-components)
 
-> Provides function and classes for data loading and preprocessing.
+> Provides functions and classes for data loading and preprocessing.
 
 ### 7.1. Data Loading [🔝](#core-components)
 
@@ -475,7 +477,7 @@ auto X_test_scaled = scaler.transform(X_test);
 
 ## VIII. [`converters.hpp`](./n2n_autograd/converters.hpp) | Data Conversion Utilities [🔝](#core-components)
 
-> Contain utility functions to facilitate the conversion of different data types commonly used in the preprocessing, particularly when preparing data for training as well as inference by converting raw data into tensors suitable for model input.
+> Contain utility functions to facilitate the conversion of different data types commonly used in preprocessing, particularly when preparing data for training as well as inference by converting raw data into tensors suitable for model input.
 
 ### 8.1. *any* Conversion [🔝](#core-components)
 
@@ -486,7 +488,7 @@ auto X_test_scaled = scaler.transform(X_test);
 
 ### 8.2. One-Hot Encoding [🔝](#core-components)
 
-- *vector<vector<*int*>>* **anys_to_1hots**(*const vector<any>&* `y_raw`, *int* `num_classes`): Converts a *vector* of class labels to one-hot encoded *vectors*. It will creates a *vector of vectors* (`n_samples` x `num_classes`), initializing all elements to `0`, and set the index corresponding to each class label to `1` in the one-hot *vector*.
+- *vector<vector<*int*>>* **anys_to_1hots**(*const vector<any>&* `y_raw`, *int* `num_classes`): Converts a *vector* of class labels to one-hot encoded *vectors*. It will create a *vector of vectors* (`n_samples` x `num_classes`), initialize all elements to `0`, and set the index corresponding to each class label to `1` in the one-hot *vector*.
 - *vector<vector<**`TensorPtr`**>>* **anys_to_1hot_tensors**(*const vector<*any*>&* `y_raw`, *int* `num_classes`): Similar to above but return a *vector* of *vectors* (instead of *int*) containing **`TensorPtr`** representing one-hot encodings.
 
 ### 8.3. `Tensor` Conversion [🔝](#core-components)
